@@ -1,46 +1,42 @@
-#!/usr/bin/python3
-"""
-reads stdin line by line and computes metrix
-"""
-
 import sys
 
-file_size = 0
-counter = 0
-s_codes = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
+# Define possible status codes
+status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
+
+# Initialize variables for metrics
+total_size = 0
+lines_by_status_code = {code: 0 for code in status_codes}
+
+# Define function to print metrics
 
 
-def print_stats(s_codes, file_size):
-    """
-    prints computed metrics
-    """
-    print("File size: {}".format(file_size))
-    for key, value in sorted(s_codes.items()):
-        if value != 0:
-            print("{}: {}".format(key, value))
+def print_metrics():
+    print("Total file size: File size: {}".format(total_size))
+    for code in sorted(lines_by_status_code.keys()):
+        if lines_by_status_code[code] > 0:
+            print("{}: {}".format(code, lines_by_status_code[code]))
 
 
-try:
-    for line in sys.stdin:
-        line_pas = line.split(" ")
-        if len(line_pas) > 4:
-            code = line_pas[-2]
-            filesize = int(line_pas[-1])
-            file_size += filesize
-            counter += 1
-            if code in s_codes.keys():
-                s_codes[code] += 1
-        if counter == 10:
-            counter = 0
-            print_stats(s_codes, file_size)
-finally:
-    print_stats(s_codes, file_size)
+# Read from stdin line by line
+line_count = 0
+for line in sys.stdin:
+    # Parse line using input format
+    try:
+        ip_address, date, request, status_code_str, size_str = line.split(" ")
+        status_code = int(status_code_str)
+        size = int(size_str)
+    except ValueError:
+        continue
+
+    # Update metrics
+    total_size += size
+    if status_code in status_codes:
+        lines_by_status_code[status_code] += 1
+
+    line_count += 1
+    # Print metrics after every 10 lines or upon keyboard interruption
+    if line_count % 10 == 0:
+        print_metrics()
+
+# Print final metrics upon EOF
+print_metrics()
