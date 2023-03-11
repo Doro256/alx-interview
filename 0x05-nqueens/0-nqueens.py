@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-#!/usr/bin/python3
 ''' Solving the N queens problem '''
 
 from sys import argv, exit
@@ -11,7 +10,7 @@ if len(argv) != 2:
 
 try:
     N = int(argv[1])
-except:
+except BaseException:
     print('N must be a number')
     exit(1)
 
@@ -64,7 +63,8 @@ def nqueens(board, col):
             board[i][col] = 0
     return res
 
+
 chessboard = []
 for i in range(N):
-    chessboard.append([0]*N)
+    chessboard.append([0] * N)
 nqueens(chessboard, 0)
