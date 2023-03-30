@@ -1,4 +1,9 @@
+#!/usr/bin/python3
+
 def island_perimeter(grid):
+    """ Function that that returns the perimeter of the
+        island described in grid
+    """
     # Initialize perimeter and dimensions of the grid
     perimeter = 0
     n = len(grid)
