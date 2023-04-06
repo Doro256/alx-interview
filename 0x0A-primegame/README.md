@@ -33,4 +33,4 @@ Third round: `1`
 - Ben wins because there are no prime numbers for Maria to choose
 bold 
 
-_Result: Ben has the most wins_
+*Result: Ben has the most wins*
